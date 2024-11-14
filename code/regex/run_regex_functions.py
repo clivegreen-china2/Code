@@ -7,9 +7,8 @@ from regex_functions import (
 
 def test(**args) -> [str]:
     test_function = args.get('function', None)
-    label: str = args.get('label', "data")
-    prompt: str = f'Type in your {label}: '
-    the_input: str = input(prompt)
+    label: str = args.get('label', 'data')
+    the_input: str = input(f'Type in your {label}: ')
 
     if callable(test_function):
         results = test_function(the_input)
