@@ -9,7 +9,12 @@ parking_days: [int] = settings['valid_days']
 parking_hours: [int] = settings['hours']['all_hours']
 
 
-def calculate_price(day: str, hour: int, duration: float, fpn: str | None) -> float:
+def calculate_price(
+        day: str,
+        hour: int,
+        duration: float,
+        fpn: str | None
+) -> float:
 
     if day not in parking_days:
         print('invalid day (enter 1 to 7)')

@@ -1,5 +1,5 @@
 from datetime import time
-from fpn import generate_fpn
+from fpn import (base, generate_fpn)
 from task1 import calculate_price
 
 day_names = [
@@ -14,9 +14,8 @@ day_names = [
 ]
 
 day, hour, duration = '6', 18, 5
-fpn: str = generate_fpn()
+fpn: str = generate_fpn(base())
 the_price: float = calculate_price(day, hour, duration, fpn)
-
 day_name = day_names[int(day)]
 time = time(hour).strftime('%H:%M')
 print(

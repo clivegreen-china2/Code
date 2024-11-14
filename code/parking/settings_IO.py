@@ -1,17 +1,16 @@
-import json
-import settings
+import json, settings, fileIO
 
 
 def export_settings() -> None:
-    with open("settings.json", "w") as outfile:
-        json.dump(settings.settings(), outfile)
+    json_data = json.dumps(settings.settings(), ensure_ascii=False)
+    fileIO.write('settings.json', json_data)
 
 
 def import_settings() -> dict:
-    with open("settings.json") as infile:
-        return json.load(infile)
+    json_data = fileIO.read('settings.json')
+    return json.loads(json_data)
 
 
-export_settings()
-imported_settings = import_settings()
-print(imported_settings)
+if __name__ == "__main__":
+    export_settings()
+    print(import_settings())
