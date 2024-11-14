@@ -1,3 +1,6 @@
+from math import floor
+
+
 def format_as_currency(the_amount: float) -> str:
     return "{:.2f}".format(the_amount)
 
@@ -5,11 +8,11 @@ def format_as_currency(the_amount: float) -> str:
 total = float(input('Total bill: '))
 count = int(input('How many people: '))
 payee, payees = 'person needs', 'people need'
-split = (total / count)
+split = floor(100 * total / count) / 100
 pennies = (total - split * count)
 
 amount: str = ""
-if pennies == 0:
+if pennies == 0.0:
     amount = format_as_currency(split)
     print(f"The split is {amount} each.")
 else:
