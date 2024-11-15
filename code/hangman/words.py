@@ -1,4 +1,6 @@
-word_list = [
+from random import choice
+
+words = [
     "aback", "abaft", "abandoned", "abashed", "aberrant", "abhorrent", "abiding", "abject", "ablaze", "able",
     "abnormal", "aboard", "aboriginal", "abortive", "abounding", "abrasive", "abrupt", "absent", "absorbed",
     "absorbing", "abstracted", "absurd", "abundant", "abusive", "accept", "acceptable", "accessible", "accidental",
@@ -225,3 +227,7 @@ word_list = [
     "young", "youthful", "yummy", "zany", "zealous", "zebra", "zephyr", "zesty", "zinc", "zip", "zipper", "zippy",
     "zonked", "zoo", "zoom"
 ]
+
+
+def get_random_word() -> str:
+    return choice(words)

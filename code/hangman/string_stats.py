@@ -33,9 +33,3 @@ class StringStats:
 
     def show(self):
         [print(f'{pair[0]}: {pair[1]}') for pair in self]
-
-
-text: str = 'Hangman is an AMAZING game!'
-stats: StringStats = StringStats(text)
-stats.show()
-
