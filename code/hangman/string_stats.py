@@ -1,5 +1,6 @@
 import re
 
+
 class StringStats:
     def __init__(self, text_string: str):
         self.text_string_original: str = text_string
@@ -12,7 +13,21 @@ class StringStats:
         self.letter_count = sum(self.word_lengths)
         self.unique_letters: [str] = sorted(list(set(''.join(self.word_list))))
         self.unique_letter_count: int = len(self.unique_letters)
-        self.letter_indices: dict[str:[int]] = dict(zip(self.unique_letters, list()))
+        self.letter_indices: dict[str:[int]] = {c: [] for c in self.unique_letters}
         for i, c in enumerate(self.text_string):
             if c is not self.delimiter:
                 self.letter_indices[c].append(i)
+
+    def stats(self):
+        return vars(self)
+
+    def show(self) -> None:
+        [
+            print(f'{k}:\n{v}\n')
+            for k, v in self.stats().items()
+        ]
+
+
+if __name__ == '__main__':
+    text: str = 'Hangman can be a VERY educational game:-)'
+    StringStats(text).show()
