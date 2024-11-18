@@ -1,24 +1,25 @@
-
-
 class Inputter:
-
-    def as_number(input: str) -> float | None:
-        try:
-            return float(input)
-        except ValueError:
-            print(f"\'{input}\' is not a valid number.")
-            return None
 
     cancel_chars: [str] = ['q', 'Q']
 
-    def check_for_cancellation(string: str) -> None:
+    @classmethod
+    def check_for_cancellation(cls, string: str) -> None:
         if string in Inputter.cancel_chars:
             print( "\nINPUT CANCELLED" )
             import sys
             sys.exit()
 
+    @classmethod
+    def as_number(cls, the_input: str) -> float | None:
+        try:
+            return float(the_input)
+        except ValueError:
+            print(f"\'{the_input}\' is not a valid number.")
+            return None
+
     def __init__(self, **args):
-        self.quantity: int | float = None
+
+        self.quantity: int | float = 0.0
         self.input_type = args.get('input_type', 'mass')
         self.units: str = args.get('units', 'kg')
         self.min: float = float(args.get('min', 0))
@@ -37,12 +38,12 @@ class Inputter:
         return self.min <= self.quantity <= self.max
 
     def ask_for_input(self) -> int | float:
-        while self.quantity == None:
+        while self.quantity == 0.0:
             input_string = input(self.message)
             Inputter.check_for_cancellation(input_string)
 
             input_number = Inputter.as_number(input_string)
-            if (input_number) is not None:
+            if input_number is not None:
                 self.quantity = abs(input_number)
 
         print(f"{self.input_type.title()} entered: "
@@ -53,8 +54,7 @@ class Inputter:
             return self.quantity
         else:
             print(
-                f"This value is too "
-                f"{'large' if self.quantity > self.max else 'small'}."
+                f"This value is too {'large' if self.quantity > self.max else 'small'}."
             )
-            self.quantity = None
+            self.quantity = 0.0
             self.ask_for_input()
