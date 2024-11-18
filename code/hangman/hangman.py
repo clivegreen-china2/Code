@@ -1,4 +1,5 @@
 import string
+from outputter import Outputter
 from words import get_random_word as get_word
 from string_stats import StringStats
 
@@ -30,14 +31,7 @@ class Hangman:
                 self.correct_guesses ==
                 self.stats.unique_letter_count
         )
-        gr: int = self.guesses_remaining()
-        self.prompt = lambda: (
-            f'{str(gr)} guess{'' if gr == 1 else'es'}'
-            f' remaining{" - select another letter: " 
-            if gr > 1 else "."}'
-        )
-
-        self.canvas: [str] = self.stats.hangman_canvas
+        self.canvas: [str] = list(self.stats.hangman_canvas)
         self.info: str = self.stats.info
 
     def guess(self, letter: str):
@@ -56,17 +50,25 @@ class Hangman:
                 action = 'succeed'
             elif self.guesses_remaining() == 0:
                 action = 'fail'
-            self.update_ui(action)
+            self.update(action)
 
-    def update_ui(self, action: str):
-
-        # colour hangman canvas letter slots
-        # color alphabet letters red, green, black
-
-        status_message = self.prompt()
+    def update(self, action: str):
         if action == 'succeed':
-            status_message = 'Congratulations :-)'
+            prompt = 'Congratulations :-)'
         elif action == 'fail':
-            status_message = (
+            prompt = (
                 f'Commiserations :-( The correct answer is:\n'
                 f'{self.stats.text_string}.')
+        else:
+            gr: int = self.guesses_remaining()
+            prompt = (
+                f'{str(gr)} guess{'' if gr == 1 else 'es'}'
+                f' remaining{" - select another letter: "
+                if gr > 1 else "."}'
+            )
+        print(
+            f'{self.canvas}\n\n'
+            f'{Outputter.alphabet(
+                self.correct_letters, self.incorrect_letters
+            )}\n\n{prompt}'
+        )
