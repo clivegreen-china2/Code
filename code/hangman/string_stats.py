@@ -32,15 +32,14 @@ class StringStats:
 
         suffix: str = '' if self.word_count == 1 else 's'
         self.info = (
-            f'{self.word_count} word{suffix} '
-            f'({", ".join([str(n) for n in self.word_lengths])})'
+            f'{self.word_count} word{suffix}; '
+            f'{", ".join([str(n) for n in self.word_lengths])} letters'
         )
-
 
     def stats(self):
         return vars(self)
 
-    def show(self) -> None:
+    def print(self) -> None:
         [
             print(f'{k}:\n{v}\n')
             for k, v in self.stats().items()
@@ -49,4 +48,4 @@ class StringStats:
 
 if __name__ == '__main__':
     text: str = 'Hangman can be a VERY educational game:-)'
-    StringStats(text).show()
+    StringStats(text).print()

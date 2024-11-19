@@ -20,10 +20,11 @@ class Outputter:
     separator: str = fg_faint + ' | '
 
     @classmethod
-    def alphabet(
-            cls, correct: [str],
-            incorrect: [str]
-    ) -> str:
+    def output(cls, **args) -> str:
+        pass
+
+    @classmethod
+    def alphabet(cls, correct: [str], incorrect: [str]) -> str:
 
         colorized: [str] = []
         for c in string.ascii_lowercase:

@@ -31,4 +31,4 @@ for y in range(image_height):
                 break
             z = z * z + c
         image.putpixel((x, y), (i % 4 * 64, i % 8 * 32, i % 16 * 16))
-image.show()
+image.show_stats()
