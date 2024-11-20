@@ -54,7 +54,7 @@ class Outputter:
         )
 
     @classmethod
-    def pad_out(cls, text :str) -> str:
+    def pad_out(cls, text: str) -> str:
         diff: int = Outputter.display_width - len(text)
         if diff <= 0:
             return text
