@@ -45,9 +45,14 @@ class Outputter:
 
     @classmethod
     def colorize_alphabet(cls, correct: [str], incorrect: [str]) -> str:
-        alphabet: [str] = list(string.ascii_lowercase)
-        row_1: [str] = alphabet[0:13]
-        row_2: [str] = alphabet[13:]
+
+        letters: [str] = list(string.ascii_lowercase)
+        length: int = len(letters)
+        count: int = int(length / 2)
+        part1: slice = slice(0, count)  # index values: 0 to count-1
+        part2: slice = slice(count)  # index values: count to length-1
+
+        row_1, row_2 = letters[part1], letters[part2]
         return (
             f'{Outputter.colorize_letters(row_1, correct, incorrect)}\n'
             f'{Outputter.colorize_letters(row_2, correct, incorrect)}'
@@ -70,37 +75,36 @@ class Outputter:
     def output(cls, **args) -> None:
         display_text: str = ''
 
-        title_element: str = args.get('title', "<title>")
-        padding: str = ' ' * 16
-        title: str = f'{padding}{title_element}{padding}'
+        title: str = Outputter.pad_out(args.get('title', "<title>"))
         title_formatted: str = (
             f"{(Outputter.bg_letters+Outputter.fg_correct).format(title)}"
             f"{Style.RESET_ALL}\n"
         )
         display_text += title_formatted
 
-        info: str = args.get('info', '<info>')
+        info: str = Outputter.pad_out(args.get('info', '<info>'))
         info_formatted: str = (
             f'{(Outputter.bg_normal+Outputter.fg_black).format(info)}'
             f'{Style.RESET_ALL}\n'
         )
         display_text += info_formatted
 
-        canvas_element: [str] = args.get('canvas', '<canvas>')
+        canvas_characters: [str] = args.get('canvas', [])
+        canvas: str = Outputter.pad_out(''.join(canvas_characters))
         canvas_formatted: str = (
             f'{Outputter.bg_normal}{Outputter.fg_normal}'
-            f'{''.join(canvas_element)}\n'
+            f'{''.join(canvas)}\n'
             f'{Style.RESET_ALL}\n'
         )
         display_text += canvas_formatted
 
-        alphabet_formatted: str = Outputter.colorize_alphabet(
+        alphabet_formatted: str = Outputter.pad_out(Outputter.colorize_alphabet(
             args.get('correct', []),
             args.get('incorrect', [])
-        )
+        ))
         display_text += alphabet_formatted
 
-        strap_element: str = args.get('strap', '<strap>')
+        strap_element: str = Outputter.pad_out(args.get('strap', '<strap>'))
         strap_formatted: str = (
             f'{Outputter.bg_normal}{Outputter.fg_normal}'
             f'{strap_element}\n'
@@ -110,3 +114,7 @@ class Outputter:
 
         stdout.write("\r%s" % display_text)
         stdout.flush()
+
+
+if __name__ == '__main__':
+    pass

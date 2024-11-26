@@ -1,0 +1,1 @@
+# bg + fg colors, padding, word-wrap.

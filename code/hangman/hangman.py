@@ -77,7 +77,7 @@ class Hangman:
             title='HANGMAN',
             info=self.stats.info,
             canvas=self.canvas,
-            strap=self.strap,
             correct=self.correct_letters,
-            incorrect=self.incorrect_letters
+            incorrect=self.incorrect_letters,
+            strap=self.strap,
         )
