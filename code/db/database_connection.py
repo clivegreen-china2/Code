@@ -43,11 +43,22 @@ class DatabaseConnection:
                 except sqlite3.Error as e:
                     print(e)
 
-    def add_record(self, table_name: str, fields: tuple[str], values: tuple):
+    def add_record(
+            self,
+            table_name: str,
+            fields: tuple[str],
+            values: tuple
+    ):
         self.add_records(table_name, fields, [values])
 
-    def add_records(self, table_name: str, fields: tuple[str], values: [tuple]):
-        sql_statement: str = f'INSERT INTO {table_name} {fields} VALUES'
+    def add_records(
+            self,
+            table_name:
+            str, fields: tuple[str],
+            values: [tuple]
+    ):
+        sql_statement: str = \
+            f'INSERT INTO {table_name} {fields} VALUES'
         for value_set in values:
             sql_statement += f' {value_set}'
         self.run_sql(sql=[sql_statement])

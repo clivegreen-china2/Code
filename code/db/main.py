@@ -3,6 +3,7 @@ from database_connection import (
     transpose
 )
 
+
 def add_tables(db: Dbc) -> None:
     sql_statements: [str] = [
         """
@@ -25,14 +26,14 @@ def add_tables(db: Dbc) -> None:
                 status_id INT NOT NULL, 
                 begin_date TEXT NOT NULL, 
                 end_date TEXT NOT NULL, 
-                FOREIGN KEY (project_id) REFERENCES projects (id)
+                FOREIGN KEY (project_id) 
+                REFERENCES projects (id)
         );"""
     ]
     db.run_sql(sql=sql_statements)
 
 
 if __name__ == '__main__':
-
     database = Dbc("test_database.db")
     # add_tables(database)
 
@@ -42,9 +43,13 @@ if __name__ == '__main__':
 
     field_names: [str] = record['keys']
     field_values: tuple = record['values']
-    database.add_record(table_name, field_names, field_values)
-
-    people: [tuple] = database.get_all_records('people')
+    database.add_record(
+        table_name,
+        field_names,
+        field_values
+    )
+    people: [tuple] = (
+        database.get_all_records('people'))
     database.close()
 
     print(people)
