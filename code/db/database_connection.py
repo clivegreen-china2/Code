@@ -9,7 +9,7 @@ def connection_valid(connection) -> bool:
         return True
 
 
-def close_connection(connection):
+def close_connection(connection) -> None:
     if connection_valid(connection):
         connection.close()
 
@@ -23,12 +23,17 @@ class DatabaseConnection:
 
     def __init__(self, filename):
         self.connection = None
+        self.cursor = None
         try:
             self.connection = sqlite3.connect(filename)
+            self.cursor = self.connection.cursor()
         except sqlite3.Error as e:
             print(e)
 
-    def close(self):
+    def get_results(self) -> [tuple]:
+        return self.cursor.fetchall()
+
+    def close(self) -> None:
         close_connection(self.connection)
 
     def run_sql(self, **settings) -> None:
@@ -36,9 +41,8 @@ class DatabaseConnection:
             sql_statements: [str] = settings.get('sql', [])
             if len(sql_statements):
                 try:
-                    cursor = self.connection.cursor()
                     for statement in sql_statements:
-                        cursor.execute(statement)
+                        self.cursor.execute(statement)
                     self.connection.commit()
                 except sqlite3.Error as e:
                     print(e)
@@ -48,22 +52,26 @@ class DatabaseConnection:
             table_name: str,
             fields: tuple[str],
             values: tuple
-    ):
-        self.add_records(table_name, fields, [values])
+    ) -> None:
+        self.add_records(
+            table_name,
+            fields,
+            [values]
+        )
 
     def add_records(
             self,
             table_name:
             str, fields: tuple[str],
             values: [tuple]
-    ):
+    ) -> None:
         sql_statement: str = \
             f'INSERT INTO {table_name} {fields} VALUES'
         for value_set in values:
             sql_statement += f' {value_set}'
         self.run_sql(sql=[sql_statement])
 
-    def get_all_records(self, table_name):
+    def get_all_records(self, table_name) -> [tuple]:
         cursor = self.connection.cursor()
         cursor.execute(f'SELECT * FROM {table_name}')
         return cursor.fetchall()
