@@ -72,6 +72,5 @@ class DatabaseConnection:
         self.run_sql(sql=[sql_statement])
 
     def get_all_records(self, table_name) -> [tuple]:
-        cursor = self.connection.cursor()
-        cursor.execute(f'SELECT * FROM {table_name}')
-        return cursor.fetchall()
+        self.cursor.execute(f'SELECT * FROM {table_name}')
+        return self.get_results()
