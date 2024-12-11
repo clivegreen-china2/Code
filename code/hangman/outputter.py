@@ -1,47 +1,10 @@
 import string
 from math import floor
-from colorama import Fore, Back, Style
+from formatter import Formatter
 from sys import stdout
 
 
 class Outputter:
-    display_width: int = 50
-    bg_letters: str = Back.BLACK
-    fg_invisible: str = Fore.BLACK
-    bg_normal: str = Back.LIGHTBLACK_EX
-    fg_normal: str = Fore.WHITE + '{}'
-    fg_black: str = Fore.BLACK + '{}'
-    fg_correct: str = Fore.GREEN + '{}'
-    fg_incorrect: str = Fore.RED + '{}'
-    fg_unchosen: str = Style.BRIGHT + Fore.LIGHTWHITE_EX + '{}'
-    fg_faint: str = Style.DIM + Fore.LIGHTBLACK_EX
-    start_piece: str = bg_letters + fg_invisible + '.'
-    end_piece: str = start_piece + Style.RESET_ALL
-    letter_separator: str = '  '
-
-    @classmethod
-    def colorize_letters(
-            cls,
-            letters: [str],
-            correct: [str],
-            incorrect: [str]
-    ) -> str:
-
-        colorized: [str] = []
-        for c in letters:
-            ansi_color: str = Outputter.fg_unchosen
-            if c in correct:
-                ansi_color = Outputter.fg_correct
-            elif c in incorrect:
-                ansi_color = Outputter.fg_incorrect
-            colorized.append(ansi_color.format(c))
-
-        colorized_letters = Outputter.letter_separator.join(colorized)
-        return (
-                Outputter.start_piece +
-                colorized_letters +
-                Outputter.end_piece
-        )
 
     @classmethod
     def colorize_alphabet(cls, correct: [str], incorrect: [str]) -> str:
@@ -54,6 +17,15 @@ class Outputter:
 
         row_1, row_2 = letters[part1], letters[part2]
         return (
+
+            Formatter(
+                text='Guess the word(s)!',
+                align='center',
+                style='NORMAL'
+            )
+
+
+
             f'{Outputter.colorize_letters(row_1, correct, incorrect)}\n'
             f'{Outputter.colorize_letters(row_2, correct, incorrect)}'
         )
@@ -77,14 +49,14 @@ class Outputter:
 
         title: str = Outputter.pad_out(args.get('title', "<title>"))
         title_formatted: str = (
-            f"{(Outputter.bg_letters+Outputter.fg_correct).format(title)}"
+            f"{(Outputter.bg_letters+Outputter.fg_correct).formatted(title)}"
             f"{Style.RESET_ALL}\n"
         )
         display_text += title_formatted
 
         info: str = Outputter.pad_out(args.get('info', '<info>'))
         info_formatted: str = (
-            f'{(Outputter.bg_normal+Outputter.fg_black).format(info)}'
+            f'{(Outputter.bg_normal+Outputter.fg_black).formatted(info)}'
             f'{Style.RESET_ALL}\n'
         )
         display_text += info_formatted
