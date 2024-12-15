@@ -8,11 +8,15 @@ class Formatter:
     def __init__(self, **args):
 
         self.text: str = args.get('text', '<TEXT MISSING>')
-        self.max_text_width: int = args.get('max_text_width', 43)
-        self.pad_width: int = args.get('pad_width', 4)
+        self.max_text_width: int = args.get('max_text_width', len(self.text))
+        self.pad_width: int = args.get('pad_width', 0)
         self.align: str = args.get('align', 'left')
         self.item_type: str = args.get('item_type', 'line')
         self.style: str = args.get('style', 'DEFAULT')
+
+        self.delimiters: dict[str: str] = dict(line='\n', string=' ')
+
+        default_delimiter: str = self.delimiters.get(self.item_type)
         self.delimiter: str = args.get('delimiter', '\n')
 
         self.frame_width = self.max_text_width + 2 * self.pad_width
