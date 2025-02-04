@@ -1,0 +1,13 @@
+seller_pattern: str = r'([A-Za-z\'\s-]+)?'
+    reserve_pattern: str = r'(\d+(?:[.]\d+)?)'
+    description_pattern: str = r'(.+)'
+
+    parse_pattern: str = \
+        f'^{seller_pattern} ** {reserve_pattern} ** {description_pattern}$'
+
+    with (open(file_name, 'r') as item_strings):
+        for item_string in item_strings:
+            matches = re.match(parse_pattern, item_string)
+            seller_name: str = matches[1]
+            reserve_price: float = abs(float(matches[2]))
+            description: str = matches[3]

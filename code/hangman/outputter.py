@@ -49,14 +49,14 @@ class Outputter:
 
         title: str = Outputter.pad_out(args.get('title', "<title>"))
         title_formatted: str = (
-            f"{(Outputter.bg_letters+Outputter.fg_correct).formatted(title)}"
+            f"{(Outputter.bg_letters+Outputter.fg_correct).format_number(title)}"
             f"{Style.RESET_ALL}\n"
         )
         display_text += title_formatted
 
         info: str = Outputter.pad_out(args.get('info', '<info>'))
         info_formatted: str = (
-            f'{(Outputter.bg_normal+Outputter.fg_black).formatted(info)}'
+            f'{(Outputter.bg_normal+Outputter.fg_black).format_number(info)}'
             f'{Style.RESET_ALL}\n'
         )
         display_text += info_formatted

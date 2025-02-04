@@ -1,126 +1,84 @@
 import math
 from textwrap import TextWrapper
-from styles import colorize
+
+from colorizer import Colorizer
+colorizer = Colorizer()
+colorings = colorizer.colorings
+colorize = colorizer.colorize
+
+
 
 
 class Formatter:
 
+    string_types: [str] = ['line', 'item']
+    delimiters: dict[str: str] = dict(line='\n', item=' ')
+    alignments: [str] = ['left', 'center']
+
+    @classmethod
+    def chunk_text(cls, text: str, max_chunk_length: int) -> [str]:
+
+        return TextWrapper(max_chunk_length).wrap(text)
+    
+    @classmethod
+    def select(
+            cls,
+            args: dict[str: str],
+            key: str,
+            default: str,
+            allowed: [str]
+    ):
+        item = args.get_item(key, default)
+        return item if item in allowed else default
+
     def __init__(self, **args):
+
+        select = Formatter.select
+        self.type = select(args, 'type', 'line', Formatter.string_types)
+
+        self.style = select(
+            args, 'style',
+            Colorizer.default_style,
+            Colorizer.styles.keys()
+        )
+        self.alignment = select(args, 'alignment', 'left', Formatter.alignments)
+        self.delimiter = select(args, 'delimiter', '\n', Formatter.delimiters)
 
         self.text: str = args.get('text', '<TEXT MISSING>')
         self.max_text_width: int = args.get('max_text_width', len(self.text))
-        self.pad_width: int = args.get('pad_width', 0)
-        self.align: str = args.get('align', 'left')
-        self.item_type: str = args.get('item_type', 'line')
-        self.style: str = args.get('style', 'DEFAULT')
+        self.indent: int = args.get('indent', 0)
+        self.line_width = self.max_text_width + 2 * self.indent
 
-        self.delimiters: dict[str: str] = dict(line='\n', string=' ')
+        self.elements: [str] = TextWrapper(width=self.max_text_width).wrap(text=self.text)
+        self.styled: str = ''
 
-        default_delimiter: str = self.delimiters.get(self.item_type)
-        self.delimiter: str = args.get('delimiter', '\n')
+    def pad_elements(self) -> None:
 
-        self.frame_width = self.max_text_width + 2 * self.pad_width
-        self.items: [str] = []
-        self.dissect()
+        for index, element in enumerate(self.elements):
 
-    def dissect(self) -> None:
-        tw: TextWrapper = TextWrapper(width=self.max_text_width)
-        self.items = tw.wrap(text=self.text)
-
-    def pad_lines(self):
-        ...
-
-    def format(self) -> None:
-
-        if self.item_type == 'line':
-            tw: TextWrapper = TextWrapper(width=self.max_text_width)
-            self.items: [str] = tw.wrap(text=self.text)
-            for index, item in enumerate(self.items):
-                pad_width: int = self.frame_width - len(item)
+            if self.type == 'item':
+                self.elements[index] = f'{self.indent * " "}{element}{self.indent * " "}'
+            elif self.type == 'line':
+                pad_width = self.line_width - len(element)
                 l_pad_width: int = math.floor(pad_width/2) \
-                    if self.align == 'center' else self.pad_width
+                    if self.alignment == 'center' else self.indent
                 r_pad_width: int = pad_width - l_pad_width
-                self.items[index] = f'{l_pad_width * " "}{item}{r_pad_width * " "}'
-        else:
-            self.items = list(self.text)
-            pad: str = self.pad_width * ' '
-            for index, item in enumerate(self.items):
-                self.items[index] = f'{pad}{item}{pad}'
+                self.elements[index] = f'{l_pad_width * " "}{element}{r_pad_width * " "}'
 
-
-        colorize(self.items, self.style)
+    def stylize(self) -> None:
+        ...
 
     def __str__(self):
 
-        self.format()
-        return self.delimiter.join(self.items)
+        self.pad_elements()
+        return self.delimiter.join(self.elements)
 
 
 if __name__ == '__main__':
-
+    ...
     f: Formatter = Formatter(
         text='HANGMAN',
+        type='string',
         align='center',
         style='TITLE'
     )
-    print(f)
-
-    f.text = 'Guess the word(s)!'
-    print(f)
-
-    f.text = ''
-    f.style = 'NONE'
-    print(f)
-
-    # # ---------------
-    #
-    # f.item_type = 'character'
-    # f.pad_width = 1
-    # f.delimiter = ' '
-    #
-    # letters: [str] = []
-    #
-    # f.text = 'A'
-    # f.style = 'CORRECT'
-    # letters.append(f'{f}')
-    #
-    # f.text = 'B'
-    # f.style = 'INCORRECT'
-    # letters.append(f'{f}')
-    #
-    # f.text = 'C'
-    # f.style = 'NORMAL'
-    # letters.append(f'{f}')
-    #
-    # print(' '.join(letters))
-    #
-    # # ---------------
-    #
-    # f.text = ''
-    # f.item_type = 'line'
-    # f.style = 'NONE'
-    # print(f)
-
-    f.text = 'Type an available letter and hit the ENTER key:'
-    f.align = 'left'
-    f.style = 'NORMAL'
-    print(f)
-
-
-    f.item_type = 'character'
-    f.pad_width = 1
-    f.delimiter = ' '
-    f.style = 'NORMAL'
-
-    f.text = 'ABCDEFGHIJKLM'
-    print(f)
-
-    f.text = ''
-    f.item_type = 'line'
-    f.style = 'NONE'
-    print(f)
-
-    f.item_type = 'character'
-    f.style = 'NORMAL'
-    f.text = 'NOPQRSTUVWXYZ'
-    print(f)

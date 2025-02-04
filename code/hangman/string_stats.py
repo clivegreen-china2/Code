@@ -2,6 +2,7 @@ import re
 
 
 class StringStats:
+
     def __init__(self, text: str):
 
         self.text_original: str = text
@@ -19,6 +20,7 @@ class StringStats:
 
         self.delimiter_indices: [int] = []
         self.letter_indices: dict[str:[int]] = {}
+
         for i, c in enumerate(self.text):
             if c is self.word_delimiter:
                 self.delimiter_indices.append(i)
@@ -27,9 +29,9 @@ class StringStats:
                 indices.append(i)
                 self.letter_indices.update({c:indices})
 
-        self.hangman_canvas: [str] = list('_' * self.text_length)
+        self.blank_canvas: [str] = list('_' * self.text_length)
         for i in self.delimiter_indices:
-            self.hangman_canvas[i] = '/'
+            self.blank_canvas[i] = '/'
 
         suffix: str = '' if self.word_count == 1 else 's'
         self.info = (
@@ -38,9 +40,11 @@ class StringStats:
         )
 
     def stats(self) -> dict:
+
         return vars(self)
 
     def print(self) -> None:
         [
-            print(f'{k}:\n{v}\n') for k, v in self.stats().items()
+            print(f'{k}:\n{v}\n')
+            for k, v in self.stats().items()
         ]

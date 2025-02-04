@@ -15,7 +15,7 @@ def close_connection(connection) -> None:
 
 
 def transpose(dic) -> dict[str:tuple]:
-    keys, values = zip(*dic.items())
+    keys, values = zip(*dic.elements())
     return dict(keys=keys, values=values)
 
 

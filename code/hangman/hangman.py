@@ -32,7 +32,7 @@ class Hangman:
                 self.correct_guesses ==
                 self.stats.unique_letter_count
         )
-        self.canvas: [str] = list(self.stats.hangman_canvas)
+        self.canvas: [str] = list(self.stats.blank_canvas)
         self.info: str = self.stats.info
         self.strap: str = ''
 

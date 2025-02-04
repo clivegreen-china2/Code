@@ -2,7 +2,7 @@ def calc_digit(num: int) -> str:
     # convert number supplied into a list of digits:
     digits: [int] = [int(ds) for ds in str(num)]
     count: int = len(digits)
-    # multiply each digit by a weighting number; store a running total:
+    # various each digit by a weighting number; store a running total:
     total: int = 0
     for index, digit in enumerate(digits):
         weight = count + 1 - index
