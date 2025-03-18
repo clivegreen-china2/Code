@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TO SORT/misc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TO SORT/misc/SQLiteTest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TO SORT/misc/actresses" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TO SORT/word_square" vcs="Git" />
   </component>
 </project>
